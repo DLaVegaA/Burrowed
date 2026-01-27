@@ -1,0 +1,17 @@
+/* client/src/style.css */
+
+/* Esto asegura que la fuente se aplique a TODO */
+:root {
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif; /* Respaldo */
+}
+
+/* IMPORTANTE: Los inputs y botones a veces no heredan la fuente solos, hay que forzarlos */
+input, button, select, textarea {
+  font-family: 'Poppins', sans-serif;
+}
