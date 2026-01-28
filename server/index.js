@@ -5,6 +5,7 @@ const sequelize = require('./src/config/db');
 // Importar modelos (Aquí irás agregando los demás conforme los creemos)
 require('./src/models/asociaciones');
 const authRoutes = require('./src/routes/authRoutes');
+const materialRoutes = require('./src/routes/materialRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json()); // Para poder recibir JSON en los POST
 app.use('/api/auth', authRoutes);
+app.use('/api/materiales', materialRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
