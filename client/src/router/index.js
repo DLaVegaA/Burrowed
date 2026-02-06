@@ -8,6 +8,11 @@ const routes = [
     path: '/dashboard', 
     name: 'Dashboard', 
     component: () => import('../views/DashboardView.vue') // Crea un archivo vacío aquí si no existe
+  },
+  { 
+    path: '/solicitar-material', 
+    name: 'SolicitarMaterial', 
+    component: () => import('../views/SolicitarMaterial.vue') 
   }
 ];
 

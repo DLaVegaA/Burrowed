@@ -1,38 +1,37 @@
 import { defineStore } from 'pinia';
-import axios from '../api/axios'; // Usamos tu instancia configurada
+import axios from '../api/axios';
 import router from '../router';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: localStorage.getItem('token') || null, // Recuperar si ya existe
+    token: localStorage.getItem('token') || null,
     usuario: JSON.parse(localStorage.getItem('usuario')) || null
   }),
   
   getters: {
-    isAuthenticated: (state) => !!state.token, // True si hay token
+    isAuthenticated: (state) => !!state.token,
   },
 
   actions: {
     async login(correo, contrasena) {
       try {
-        // Petición al Backend que acabamos de hacer
-        const { data } = await axios.post('/auth/login/profesor', { 
+        // CAMBIO CLAVE: Ahora apuntamos a la ruta universal
+        const { data } = await axios.post('/auth/login', { 
           correo, 
           contrasena 
         });
 
-        // Guardar datos en el Estado de Pinia
+        // Guardar datos en Pinia
         this.token = data.token;
         this.usuario = data.usuario;
 
-        // Guardar en LocalStorage (para que no se borre al F5)
+        // Guardar en LocalStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
-        // Redirigir al Home o Dashboard
-        router.push('/dashboard'); 
-        
+        // Retornamos true para que Login.vue sepa que puede redirigir
         return true;
+
       } catch (error) {
         console.error("Error de login:", error.response?.data?.message);
         throw error.response?.data?.message || "Error de conexión";
@@ -44,6 +43,7 @@ export const useAuthStore = defineStore('auth', {
       this.usuario = null;
       localStorage.removeItem('token');
       localStorage.removeItem('usuario');
+      // El logout sí lo forzamos desde aquí para mayor seguridad
       router.push('/login');
     }
   }

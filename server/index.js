@@ -15,6 +15,7 @@ app.use(cors());
 app.use(express.json()); // Para poder recibir JSON en los POST
 app.use('/api/auth', authRoutes);
 app.use('/api/materiales', materialRoutes);
+app.use('/api/solicitudes', require('./src/routes/solicitudRoutes'));
 
 // Ruta de prueba
 app.get('/', (req, res) => {
