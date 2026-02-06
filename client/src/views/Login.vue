@@ -60,8 +60,11 @@
 <script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '../store/auth';
+import { useRouter } from 'vue-router'; // <--- IMPORTANTE: Necesitamos el router
 
 const authStore = useAuthStore();
+const router = useRouter(); // <--- Inicializamos el router
+
 const correo = ref('');
 const contrasena = ref('');
 const errorMsg = ref('');
@@ -70,10 +73,20 @@ const cargando = ref(false);
 const handleLogin = async () => {
   cargando.value = true;
   errorMsg.value = '';
+  
   try {
-    await authStore.login(correo.value, contrasena.value);
+    // 1. Intentar Login
+    const loginExitoso = await authStore.login(correo.value, contrasena.value);
+    
+    // 2. Si todo salió bien, REDIRIGIR al Dashboard
+    if (loginExitoso) {
+      router.push('/dashboard'); // <--- ¡ESTO ES LO QUE FALTABA!
+    }
+    
   } catch (error) {
-    errorMsg.value = "Credenciales incorrectas"; // Mensaje simple
+    // Si falla (credenciales mal, servidor caído, etc.)
+    console.error(error); // Para que veas el error real en consola (F12)
+    errorMsg.value = typeof error === 'string' ? error : "Credenciales incorrectas o usuario no encontrado";
   } finally {
     cargando.value = false;
   }
